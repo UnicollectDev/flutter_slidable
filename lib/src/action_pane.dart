@@ -53,12 +53,16 @@ class ActionPane extends StatefulWidget {
     this.openThreshold,
     this.closeThreshold,
     required this.children,
+    this.beforeOpen,
   })  : assert(extentRatio > 0 && extentRatio <= 1),
         assert(
             openThreshold == null || (openThreshold > 0 && openThreshold < 1)),
         assert(closeThreshold == null ||
             (closeThreshold > 0 && closeThreshold < 1)),
         super(key: key);
+
+  ///Do something before opening the slide
+  final Function(BuildContext)? beforeOpen;
 
   /// The total extent of this [ActionPane] relatively to the enclosing
   /// [Slidable] widget.
@@ -185,6 +189,11 @@ class _ActionPaneState extends State<ActionPane> implements RatioConfigurator {
       } else {
         // If the dismissible is not ready, the animation will stop.
         // So we prefere to open the action pane instead.
+        if (widget.beforeOpen != null) {
+          if (mounted) {
+            widget.beforeOpen!(context);
+          }
+        }
         controller!.openCurrentActionPane();
       }
       return;
@@ -194,6 +203,11 @@ class _ActionPaneState extends State<ActionPane> implements RatioConfigurator {
         gesture is StillGesture &&
             ((gesture.opening && position >= openThreshold) ||
                 gesture.closing && position > closeThreshold)) {
+      if (widget.beforeOpen != null) {
+        if (mounted) {
+          widget.beforeOpen!(context);
+        }
+      }
       controller!.openCurrentActionPane();
       return;
     }
