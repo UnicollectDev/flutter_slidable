@@ -20,6 +20,8 @@ class CustomSlidableAction extends StatelessWidget {
   const CustomSlidableAction({
     Key? key,
     this.flex = _kFlex,
+    required this.height,
+    required this.width,
     this.backgroundColor = _kBackgroundColor,
     this.foregroundColor,
     this.autoClose = _kAutoClose,
@@ -38,6 +40,10 @@ class CustomSlidableAction extends StatelessWidget {
   /// other [CustomSlidableAction]s.
   /// {@endtemplate}
   final int flex;
+
+  final double height;
+
+  final double width;
 
   /// {@template slidable.actions.backgroundColor}
   /// The background color of this action.
@@ -91,8 +97,9 @@ class CustomSlidableAction extends StatelessWidget {
             ? Colors.black
             : Colors.white);
 
-    return Expanded(
-      flex: flex,
+    return SizedBox(
+      height: height,
+      width: width,
       child: SizedBox.expand(
         child: OutlinedButton(
           onPressed: () => _handleTap(context),
@@ -139,9 +146,12 @@ class SlidableAction extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.spacing = 4,
+    this.height = 75,
+    this.width = 75,
     this.label,
     this.borderRadius = BorderRadius.zero,
     this.padding,
+    this.iconSize = 20,
   })  : assert(flex > 0),
         assert(icon != null || label != null),
         super(key: key);
@@ -164,6 +174,14 @@ class SlidableAction extends StatelessWidget {
   /// An icon to display above the [label].
   final IconData? icon;
 
+  final double iconSize;
+
+  ///Height of the action
+  final double height;
+
+  ///Width of the action
+  final double width;
+
   /// The space between [icon] and [label] if both set.
   ///
   /// Defaults to 4.
@@ -184,7 +202,10 @@ class SlidableAction extends StatelessWidget {
 
     if (icon != null) {
       children.add(
-        Icon(icon),
+        Icon(
+          icon,
+          size: iconSize,
+        ),
       );
     }
 
@@ -209,7 +230,7 @@ class SlidableAction extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ...children.map(
-                (child) => Flexible(
+                (child) => SizedBox(
                   child: child,
                 ),
               )
@@ -224,6 +245,8 @@ class SlidableAction extends StatelessWidget {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       flex: flex,
+      height: height,
+      width: width,
       child: child,
     );
   }
