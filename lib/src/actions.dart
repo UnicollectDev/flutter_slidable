@@ -20,8 +20,8 @@ class CustomSlidableAction extends StatelessWidget {
   const CustomSlidableAction({
     Key? key,
     this.flex = _kFlex,
-    // required this.height,
-    // required this.width,
+    required this.height,
+    required this.width,
     this.backgroundColor = _kBackgroundColor,
     this.foregroundColor,
     this.autoClose = _kAutoClose,
@@ -41,9 +41,9 @@ class CustomSlidableAction extends StatelessWidget {
   /// {@endtemplate}
   final int flex;
 
-  // final double height;
+  final double height;
 
-  // final double width;
+  final double width;
 
   /// {@template slidable.actions.backgroundColor}
   /// The background color of this action.
@@ -97,10 +97,9 @@ class CustomSlidableAction extends StatelessWidget {
             ? Colors.black
             : Colors.white);
 
-    return Expanded(
-      flex: flex,
-      // height: height,
-      // width: width,
+    return SizedBox(
+      height: height,
+      width: width,
       child: SizedBox.expand(
         child: OutlinedButton(
           onPressed: () => _handleTap(context),
@@ -231,7 +230,7 @@ class SlidableAction extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ...children.map(
-                (child) => Flexible(
+                (child) => SizedBox(
                   child: child,
                 ),
               )
@@ -246,8 +245,8 @@ class SlidableAction extends StatelessWidget {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       flex: flex,
-      // height: height,
-      // width: width,
+      height: height,
+      width: width,
       child: child,
     );
   }
